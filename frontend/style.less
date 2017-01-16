@@ -1,0 +1,69 @@
+@mainMenuMaxWidth: 40em;
+
+@fillBackground: #880044;
+@fillBackgroundHover: #DD1155;
+@fillForeground: white;
+
+//Colors source: https://coolors.co/aa1155-880044-dd1155-ffee88-00cc99
+
+.roundedCorners(@radius: 0.2em) {
+    border-radius: @radius;
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+.wrapper {
+    width: 100%;
+    margin-top: 2em;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: bold;
+
+    margin-bottom:1em;
+}
+
+.h2 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom:0.75em;
+}
+
+h2 {
+    .h2();
+}
+
+.mainMenuItem {
+    background-color: @fillBackground;
+    color: @fillForeground;
+    .roundedCorners();
+    .h2();
+    .clickable();
+
+    text-align:center;
+    padding: 0.5em 1em;
+    display:block;
+}
+
+.mainMenuItem:hover {
+    background-color: @fillBackgroundHover;    
+}
+
+@media (min-width:@mainMenuMaxWidth)
+{
+    .wrapper {
+        width: @mainMenuMaxWidth;
+        margin-left:auto;
+        margin-right:auto;
+    }
+}
+
