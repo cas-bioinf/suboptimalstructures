@@ -9,6 +9,7 @@ init =
       , requestID = Nothing
       , message = ""
       , blastTextResult = Nothing
+      , blastFileResult = Nothing
       }
     , Cmd.none
     )

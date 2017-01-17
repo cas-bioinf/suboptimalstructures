@@ -8,14 +8,18 @@ module Types
 
 import Http
 import BLAST
+import FileReader
 
 type Msg
-    = ShowEnterRequestID
+    = ShowWelcome
+    | ShowEnterRequestID
     | ShowEnterBLASTResult
     | RequestIDChanged String
     | RequestIDSubmit
     | SearchCompleteResult (Result Http.Error String)
     | BLASTTextChanged String
+    | BLASTFileChosen (List FileReader.NativeFile)
+    | BLASTFileRead (Result FileReader.Error String)
 
 
 type State
@@ -37,4 +41,5 @@ type alias Model =
     , requestID : Maybe String
     , message : String
     , blastTextResult : MaybeParsingResult
+    , blastFileResult : MaybeParsingResult
     }

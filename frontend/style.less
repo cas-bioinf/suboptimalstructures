@@ -1,11 +1,14 @@
 @mainMenuMaxWidth: 40em;
 
-@fillBackground: #880044;
-@fillBackgroundHover: #DD1155;
-@fillForeground: white;
+@darkMain: #511730;
+@darkMainHover: #3e8989;
+@darkSecondary: #154675;
+@darkContrast: white;
+@errorColor: #f4494f ;
 
-//Colors source: https://coolors.co/aa1155-880044-dd1155-ffee88-00cc99
+//https://coolors.co/154675-511730-53a2be-f4494f-3e8989
 
+//Mixins
 .largeMargin { 
     margin-bottom:1em;
 }
@@ -14,30 +17,14 @@
     margin-bottom:0.75em;
 }
 
+.smallMargin {
+    margin-bottom: 0.5em;
+}
+
 .roundedCorners(@radius: 0.2em) {
     border-radius: @radius;
     -webkit-border-radius: @radius;
     -moz-border-radius: @radius;
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-body {
-    font-family: sans-serif;
-}
-
-
-.wrapper {
-    width: 100%;
-    margin-top: 2em;
-}
-
-h1 {
-    font-size: 3em;
-    font-weight: bold;
-    .largeMargin();
 }
 
 .subheading {
@@ -46,38 +33,61 @@ h1 {
     .mediumMargin();
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+.buttonLike {
+    background-color: @darkMain;
+    color: @darkContrast;
+    .roundedCorners();
+    .clickable;
+    text-align:center;
+    padding: 0.5em 1em;    
+
+    &:hover {
+        background-color: @darkMainHover;        
+        color: @darkContrast;
+    }
+}
+
+// Elements
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: bold;
+    .largeMargin();
+}
+
+
 h2 {
     .subheading();
-    border-bottom: 1px solid @fillBackground;
+    border-bottom: 1px solid @darkMain;
     padding-bottom: 0.2em;
 }
 
-.mainMenuItem {
-    background-color: @fillBackground;
-    color: @fillForeground;
-    .roundedCorners();
-    .subheading();
-    .clickable();
-
-    text-align:center;
-    padding: 0.5em 1em;
-    display:block;
+a {
+    .clickable();    
+    color:@darkMain;
 }
 
-.mainMenuItem:hover {
-    background-color: @fillBackgroundHover;    
+a:hover {
+    color:@darkMainHover;
 }
 
 fieldset {
-    border: 1px solid @fillBackground;
+    border: 1px solid @darkSecondary;    
     .roundedCorners();
     .mediumMargin();
     padding:0.5em;
 }
 
 legend {
-    background-color: @fillBackground;
-    color: @fillForeground;
+    background-color: @darkSecondary;
+    color:white;
     .roundedCorners();
     padding: 0.3em 1em;
     font-size: 1.5em;
@@ -86,8 +96,71 @@ legend {
 textarea {
     width:100%;
     height:20em;
+    .smallMargin();
 }
 
+ul, ol {
+    padding: 0.5em 0em 0.5em 2em;
+}
+
+ul {
+    list-style: disc;
+}
+
+ol {
+    list-style: decimal;
+}
+
+strong {
+    font-weight:bold;
+}
+
+em {
+    font-style: italic ;
+}
+
+
+//Specific classes
+.wrapper {
+    width: 100%;
+    margin-top: 2em;
+}
+
+.mainMenuItem {
+    .subheading();
+    .buttonLike();
+    display:block;
+}
+
+.messageBody {
+    padding: 0.3em;
+    font-weight: bold;
+}
+
+.messageDetail {
+    margin: -0.1em 1em 0;
+    border-width: 1px;
+    border-style: solid;
+    padding: 0.5em;
+}
+
+
+.errorMessage .messageBody {
+    background-color: @errorColor;
+}
+
+.errorMessage .messageDetail {
+    border-color: @errorColor;
+}
+
+.backButton {
+    .roundedCorners();
+    .buttonLike();
+    display:block;
+    float:right;
+}
+
+//Large screen support
 @media (min-width:@mainMenuMaxWidth)
 {
     .wrapper {

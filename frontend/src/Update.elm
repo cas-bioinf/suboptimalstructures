@@ -5,11 +5,16 @@ import HttpUtils
 import Types
 import BLASTJson
 import Json.Decode
+import FileReader
+import Task
 
 
 update : Types.Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
+        Types.ShowWelcome ->
+            ( { model | state = Types.Welcome }, Cmd.none )
+
         Types.ShowEnterRequestID ->
             ( { model | state = Types.EnterRequestID }, Cmd.none )
 
@@ -45,4 +50,38 @@ update msg model =
             ( { model | state = Types.EnterBLASTResult }, Cmd.none )
 
         Types.BLASTTextChanged text ->
-            ( {model | blastTextResult = Just (Json.Decode.decodeString BLASTJson.decoder text)}, Cmd.none)            
+            ( { model
+                | blastTextResult =
+                    if text == "" then
+                        Nothing
+                    else
+                        Just (Json.Decode.decodeString BLASTJson.decoder text)
+              }
+            , Cmd.none
+            )
+
+        Types.BLASTFileChosen files ->
+            { model | blastFileResult = Nothing }
+                ! List.map readBLASTFileTask files
+
+        Types.BLASTFileRead result ->
+            let
+                parseResult =
+                    result
+                        |> Result.mapError fileReaderErrorToString
+                        |> Result.andThen (Json.Decode.decodeString BLASTJson.decoder)
+            in
+                { model
+                    | blastFileResult =
+                        Maybe.map (Result.map2 List.append parseResult) model.blastFileResult
+                }
+            ! []
+
+
+readBLASTFileTask : FileReader.NativeFile -> Cmd Types.Msg
+readBLASTFileTask fileValue =
+    FileReader.readAsTextFile fileValue.blob
+        |> Task.attempt Types.BLASTFileRead
+
+fileReaderErrorToString : FileReader.Error -> String 
+fileReaderErrorToString _ = "File reader error"
