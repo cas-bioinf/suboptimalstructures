@@ -2,6 +2,7 @@ module HttpUtils exposing (url)
 
 import Http
 
+
 url : String -> List ( String, String ) -> String
 url baseUrl query =
     case query of
@@ -17,5 +18,3 @@ url baseUrl query =
                     queryPairs |> String.join "&"
             in
                 baseUrl ++ "?" ++ queryString
-
-                

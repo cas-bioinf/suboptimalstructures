@@ -2,5 +2,7 @@
 elm-stuff/
 # elm-repl generated files
 repl-temp-*
-bin/
+dist/
 compiled-css/
+frontend/file-reader-1.2.0/
+frontend/node_modules/
