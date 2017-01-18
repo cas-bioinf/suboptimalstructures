@@ -41,18 +41,26 @@ viewEnterBLASTResult model =
         [ Html.Keyed.node "fieldset"
             []
             [ ( "legend", legend [] [ text "Upload a File" ] )
-            , ( "file", input [ Attributes.type_ "file", onFileChange Types.BLASTFileChosen] [] )
-            , ( "preview", div [] [ viewMaybeParsingResult model.blastTextResult ] )
+            , ( "file"
+              , div
+                    [ Attributes.class "formContent"
+                    ]
+                    [ input [ Attributes.type_ "file", onFileChange Types.BLASTFileChosen ] [] ]
+              )
+            , ( "preview", div [] [ viewMaybeParsingResult model.blastFileResult ] )
             ]
         , Html.Keyed.node "fieldset"
             []
             [ ( "legend", legend [] [ text "-OR- Paste the result below" ] )
             , ( "text"
-              , textarea
-                    [ Attributes.placeholder "BLAST hit in JSON format"
-                    , Events.onInput Types.BLASTTextChanged
+              , div
+                    [ Attributes.class "formContent" ]
+                    [ textarea
+                        [ Attributes.placeholder "BLAST hit in JSON format"
+                        , Events.onInput Types.BLASTTextChanged
+                        ]
+                        []
                     ]
-                    []
               )
             , ( "preview", div [] [ viewMaybeParsingResult model.blastTextResult ] )
             ]
@@ -97,7 +105,7 @@ viewMaybeParsingResult maybeResult =
                             ++ " search results."
                         )
                     ]
-                , ul [] <| List.map (\x -> li [] (viewBLASTResultSummary x)) results
+                , ol [] <| List.map (\x -> li [] (viewBLASTResultSummary x)) results
                 ]
 
         Just (Err error) ->
@@ -111,9 +119,9 @@ viewMaybeParsingResult maybeResult =
 
 viewBLASTResultSummary : BLAST.Result -> List (Html Types.Msg)
 viewBLASTResultSummary result =
-    [ text
-        ((toString <| numMatches result) ++ " segments in " ++ (toString <| List.length result.hits) ++ " sequences for query ")
-    , em [] [ text result.title ]
+    [ text "Query: "
+    , em [Attributes.class "blastQuery"] [ text result.title ]
+    , ul [] [ li [] [ text ((toString <| numMatches result) ++ " segments in " ++ (toString <| List.length result.hits) ++ " sequences.")]]
     ]
 
 
@@ -140,7 +148,8 @@ errorMessage body detail =
         , p [ Attributes.class "messageDetail" ] [ text detail ]
         ]
 
-onFileChange: (List FileReader.NativeFile -> Types.Msg) -> Html.Attribute Types.Msg
+
+onFileChange : (List FileReader.NativeFile -> Types.Msg) -> Html.Attribute Types.Msg
 onFileChange action =
     Events.on
         "change"

@@ -73,9 +73,14 @@ update msg model =
             in
                 { model
                     | blastFileResult =
-                        Maybe.map (Result.map2 List.append parseResult) model.blastFileResult
+                        case model.blastFileResult of
+                            Just oldResult ->
+                                Just (Result.map2 List.append parseResult oldResult)
+
+                            Nothing ->
+                                Just parseResult
                 }
-            ! []
+                    ! []
 
 
 readBLASTFileTask : FileReader.NativeFile -> Cmd Types.Msg
@@ -83,5 +88,7 @@ readBLASTFileTask fileValue =
     FileReader.readAsTextFile fileValue.blob
         |> Task.attempt Types.BLASTFileRead
 
-fileReaderErrorToString : FileReader.Error -> String 
-fileReaderErrorToString _ = "File reader error"
+
+fileReaderErrorToString : FileReader.Error -> String
+fileReaderErrorToString _ =
+    "File reader error"
