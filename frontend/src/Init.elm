@@ -1,7 +1,7 @@
 module Init exposing (init)
 
 import Types
-
+import Set
 
 init : ( Types.Model, Cmd Types.Msg )
 init =
@@ -10,6 +10,8 @@ init =
       , message = ""
       , blastTextResult = Nothing
       , blastFileResult = Nothing
+      , resultsToChooseFrom = []
+      , ignoredAlignments = Set.empty
       }
     , Cmd.none
     )

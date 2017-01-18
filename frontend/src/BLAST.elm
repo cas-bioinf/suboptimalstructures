@@ -2,8 +2,8 @@ module BLAST
     exposing
         ( Strand(..)
         , Result
-        , Hit
-        , Match
+        , SequenceResult
+        , Alignment
         )
 
 
@@ -13,18 +13,18 @@ type Strand
 
 
 type alias Result =
-    { title : String
-    , hits : List Hit
+    { queryTitle : String
+    , sequenceResults : List SequenceResult
     }
 
 
-type alias Hit =
-    { title : String
-    , hsps : List Match
+type alias SequenceResult =
+    { sequenceTitle : String
+    , alignments : List Alignment
     }
 
 
-type alias Match =
+type alias Alignment =
     { score : Float
     , queryFrom : Int
     , queryTo : Int

@@ -7,6 +7,7 @@ import BLASTJson
 import Json.Decode
 import FileReader
 import Task
+import Set
 
 
 update : Types.Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
@@ -81,6 +82,48 @@ update msg model =
                                 Just parseResult
                 }
                     ! []
+
+        Types.ShowChooseBLASTAlignments results ->
+            { model
+                | state = Types.ChooseBLASTAlignments
+                , resultsToChooseFrom = results
+                , ignoredAlignments = Set.empty
+            }
+                ! []
+
+        Types.BLASTAlignmentSelectionChagned alignmentIndex selected ->
+            let
+                newIgnoredAlignments =
+                    if selected then
+                        Set.remove alignmentIndex model.ignoredAlignments
+                    else
+                        Set.insert alignmentIndex model.ignoredAlignments
+            in
+                { model | ignoredAlignments = newIgnoredAlignments } ! []
+
+        Types.SelectAllBLASTAlignments selected ->
+            let
+                newIgnoredAlignments =
+                    if selected then
+                        Set.empty
+                    else
+                        Set.fromList
+                            (model.resultsToChooseFrom
+                                |> List.indexedMap
+                                    (\resultIndex result ->
+                                        result.sequenceResults
+                                            |> List.indexedMap
+                                                (\sequenceIndex sequenceResult ->
+                                                    sequenceResult.alignments |> List.indexedMap (\alignmentIndex _ -> ( resultIndex, sequenceIndex, alignmentIndex ))
+                                                )
+                                            |> List.foldl (++) []
+                                    )
+                                |> List.foldl (++) []
+                            )
+
+                --TODO
+            in
+                { model | ignoredAlignments = newIgnoredAlignments } ! []
 
 
 readBLASTFileTask : FileReader.NativeFile -> Cmd Types.Msg

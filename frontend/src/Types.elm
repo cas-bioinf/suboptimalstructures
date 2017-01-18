@@ -4,11 +4,13 @@ module Types
         , State(..)
         , Model        
         , MaybeParsingResult
+        , AlignmentIndex
         )
 
 import Http
 import BLAST
 import FileReader
+import Set
 
 type Msg
     = ShowWelcome
@@ -20,6 +22,19 @@ type Msg
     | BLASTTextChanged String
     | BLASTFileChosen (List FileReader.NativeFile)
     | BLASTFileRead (Result FileReader.Error String)
+    | ShowChooseBLASTAlignments (List BLAST.Result)
+    | BLASTAlignmentSelectionChagned AlignmentIndex Bool
+    | SelectAllBLASTAlignments Bool
+
+type alias Model =
+    { state : State
+    , requestID : Maybe String
+    , message : String
+    , blastTextResult : MaybeParsingResult
+    , blastFileResult : MaybeParsingResult
+    , resultsToChooseFrom: List BLAST.Result
+    , ignoredAlignments: Set.Set AlignmentIndex
+    }
 
 
 type State
@@ -28,18 +43,12 @@ type State
     | CheckingSearchComplete
     | FetchingResult
     | EnterBLASTResult
+    | ChooseBLASTAlignments
 
-
-
---    | ShowResult
 
 type alias MaybeParsingResult =
     Maybe (Result String (List BLAST.Result))
 
-type alias Model =
-    { state : State
-    , requestID : Maybe String
-    , message : String
-    , blastTextResult : MaybeParsingResult
-    , blastFileResult : MaybeParsingResult
-    }
+type alias AlignmentIndex = (Int,Int,Int) 
+ 
+

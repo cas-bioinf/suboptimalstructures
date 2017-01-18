@@ -17,16 +17,16 @@ decoder =
                             (field "hits" <| list hitDecoder)
 
 
-hitDecoder : Decoder BLAST.Hit
+hitDecoder : Decoder BLAST.SequenceResult
 hitDecoder =
-    map2 BLAST.Hit
+    map2 BLAST.SequenceResult
         (field "description" <| index 0 <| field "title" string)
         (field "hsps" <| list matchDecoder)
 
 
-matchDecoder : Decoder BLAST.Match
+matchDecoder : Decoder BLAST.Alignment
 matchDecoder =
-    Pipeline.decode BLAST.Match
+    Pipeline.decode BLAST.Alignment
         |> Pipeline.required "score" float
         |> Pipeline.required "query_from" int
         |> Pipeline.required "query_to" int
