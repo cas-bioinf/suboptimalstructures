@@ -1,0 +1,73 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+    /*    {
+            "name": "Python",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            "pythonPath": "${config.python.pythonPath}",
+            "program": "${file}",
+            "cwd": "${workspaceRoot}",
+            "debugOptions": [
+                "WaitOnAbnormalExit",
+                "WaitOnNormalExit",
+                "RedirectOutput"
+            ]
+        },*/
+
+        {
+            "name": "Flask",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            "pythonPath": "${config.python.pythonPath}",
+            "program": "${workspaceRoot}/run.py",
+            "cwd": "${workspaceRoot}",
+            "env": {
+                "FLASK_APP": "${workspaceRoot}/app.py"
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload"
+            ],
+            "debugOptions": [
+                "WaitOnAbnormalExit",
+                "WaitOnNormalExit",
+                "RedirectOutput"
+            ]
+        },
+        {
+            "name": "Flask-Reload",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            "pythonPath": "${config.python.pythonPath}",
+            "program": "${workspaceRoot}/run.py",
+            "cwd": "${workspaceRoot}",
+            "env": {
+                "FLASK_APP": "${workspaceRoot}/app.py",
+                "FLASK_DEBUG" : 1
+            },
+            "args": [
+                "run"
+            ],
+            "debugOptions": [
+                "WaitOnAbnormalExit",
+                "WaitOnNormalExit",
+                "RedirectOutput"
+            ]
+        },
+        {
+            "name": "Attach (Remote Debug)",
+            "type": "python",
+            "request": "attach",
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": "${workspaceRoot}",
+            "port": 3000,
+            "secret": "my_secret",
+            "host": "localhost"
+        }
+    ]
+}
