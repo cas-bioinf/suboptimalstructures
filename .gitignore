@@ -6,3 +6,5 @@ dist/
 compiled-css/
 frontend/file-reader-1.2.0/
 frontend/node_modules/
+backend/.env
+__pycache__/
