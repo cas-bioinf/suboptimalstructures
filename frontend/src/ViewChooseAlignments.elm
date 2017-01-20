@@ -15,6 +15,7 @@ view model =
     [ h2 [] [ text "Choose BLAST matches" ]
     , button [ Events.onClick (Types.ChooseAlignmentsMsg (SelectAll True)) ] [ text "Select All" ]
     , button [ Events.onClick (Types.ChooseAlignmentsMsg (SelectAll False)) ] [ text "Select None" ]
+    , button [ Events.onClick (Types.RunQuery (model.resultsToChooseFrom)) ] [ text "Find Homologs" ]
     , ol [ Attributes.class "resultList" ]
         (model.resultsToChooseFrom
             |> List.indexedMap (viewResult model.ignoredAlignments)

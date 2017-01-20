@@ -7,6 +7,7 @@ app = Flask(__name__)
 next_request_id = 0
 
 
+@app.after_request
 def add_default_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
@@ -15,9 +16,9 @@ def add_default_headers(response):
 @app.route('/compute', methods=['POST'])
 def compute():
     global next_request_id
-    response = jsonify({"requestID": next_request_id})
+    response = jsonify({"requestID": str(next_request_id)})
     next_request_id += 1
-    return add_default_headers(response)
+    return response
 
 def not_available(request_id):
     return make_response(jsonify("Result not available"), 404)
@@ -25,20 +26,20 @@ def not_available(request_id):
 @app.route('/status/<int:request_id>')
 def status(request_id):
     if request_id == 0:
-        response = jsonify({"requestID" : request_id, "status" : "Complete"})
+        response = jsonify({"requestID" : str(request_id), "status" : "Complete"})
     elif request_id >= 0 and request_id < next_request_id:
-        response = jsonify({"requestID" : request_id, "status" : "Computing"})
+        response = jsonify({"requestID" : str(request_id), "status" : "Running"})
     else:
-        response = not_available(request_id)
-    return add_default_headers(response)
+        response = not_available(str(request_id))
+    return response
 
 @app.route('/result/<int:request_id>')
 def result(request_id):
     if request_id == 0:
-        response = jsonify({"requestID" : request_id, "result" : "Very very happy"})
+        response = jsonify({"requestID" : str(request_id), "result" : "Very very happy"})
     else:
         response = not_available(request_id)
-    return add_default_headers(response)
+    return response
 
 
 @app.route('/')
