@@ -8,7 +8,7 @@ import Set
 
 init : ( Types.Model, Cmd Types.Msg )
 init =
-    ( { state = Types.ChooseAlignments
+    ( { state = Types.Input
       , inputModel =
             { state = TypesInput.EnterBLASTResult
             , requestID = Nothing

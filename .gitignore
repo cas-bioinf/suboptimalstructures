@@ -4,7 +4,8 @@ elm-stuff/
 repl-temp-*
 dist/
 compiled-css/
-frontend/file-reader-1.2.0/
+frontend/filereader/
 frontend/node_modules/
 backend/.env
 __pycache__/
+*~
